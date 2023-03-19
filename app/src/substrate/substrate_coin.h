@@ -63,9 +63,9 @@ typedef enum {
 #define COIN_NAME "Nakamoto Bittensor Mainnet"
 #define COIN_TICKER "TAO "
 
-#define MENU_MAIN_APP_LINE1 "Bittensor"
+#define MENU_MAIN_APP_LINE1 "Bittensor Nakamoto"
 #define MENU_MAIN_APP_LINE2 "Ready"
-#define APPVERSION_LINE1 "Bittensor"
+#define APPVERSION_LINE1 "Bittensor Nakamoto"
 #define APPVERSION_LINE2 "v" APPVERSION
 
 #ifdef __cplusplus

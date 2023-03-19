@@ -56,14 +56,14 @@ DEFINES += APP_STANDARD
 ifneq ($(TARGET_NAME),TARGET_NANOS)
 DEFINES += SUBSTRATE_PARSER_FULL
 endif
-APPNAME = "Bittensor"
-APPPATH = "44'/1005'"
+APPNAME = "Bittensor Nakamoto"
+APPPATH = "44'/0'"
 
 else ifeq ($(COIN),TAO_XL)
 # XL app configuration
 DEFINES += APP_STANDARD SUBSTRATE_PARSER_FULL
-APPNAME = "Bittensor XL"
-APPPATH = "44'/1005'"
+APPNAME = "Bittensor Nakamoto XL"
+APPPATH = "44'/0'"
 
 else
 define error_message
