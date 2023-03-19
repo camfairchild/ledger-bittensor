@@ -30,15 +30,6 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_V1(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_balances_force_transfer_V1(
-    parser_context_t* c, pd_balances_force_transfer_V1_t* m)
-{
-    CHECK_ERROR(_readLookupasStaticLookupSource_V1(c, &m->source))
-    CHECK_ERROR(_readLookupasStaticLookupSource_V1(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->amount))
-    return parser_ok;
-}
-
 __Z_INLINE parser_error_t _readMethod_balances_transfer_keep_alive_V1(
     parser_context_t* c, pd_balances_transfer_keep_alive_V1_t* m)
 {
@@ -71,63 +62,9 @@ __Z_INLINE parser_error_t _readMethod_subtensor_module_remove_stake_V1(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_subtensor_module_burned_register_V1(
-    parser_context_t* c, pd_subtensor_module_burned_register_V1_t * m)
-{
-    CHECK_ERROR(_readu16(c, &m->netuid ))
-    CHECK_ERROR(_readStakingAddress32_V1(c, &m->hotkey))
-    return parser_ok;
-}
-
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
 #endif
-
-__Z_INLINE parser_error_t _readMethod_subtensor_module_sudo_add_network_V1(
-    parser_context_t* c, pd_subtensor_module_sudo_add_network_V1_t * m)
-{
-    CHECK_ERROR(_readu16(c, &m->netuid ))
-    CHECK_ERROR(_readu16(c, &m->tempo ))
-    CHECK_ERROR(_readu16(c, &m->modality ))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_sudo_sudo_V1(
-    parser_context_t* c, pd_sudo_sudo_V1_t * m)
-{
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_sudo_set_key_V1(
-    parser_context_t* c, pd_sudo_set_key_V1_t * m)
-{
-    CHECK_ERROR(_readLookupasStaticLookupSource_V1(c, &m->new_))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_balances_set_balance_V1(
-    parser_context_t* c, pd_balances_set_balance_V1_t* m)
-{
-    CHECK_ERROR(_readLookupasStaticLookupSource_V1(c, &m->who))
-    CHECK_ERROR(_readCompactBalance(c, &m->new_free))
-    CHECK_ERROR(_readCompactBalance(c, &m->new_reserved))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_balances_force_unreserve_V1(
-    parser_context_t* c, pd_balances_force_unreserve_V1_t* m)
-{
-    CHECK_ERROR(_readLookupasStaticLookupSource_V1(c, &m->who))
-    CHECK_ERROR(_readBalance(c, &m->amount))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_system_set_code_V1(
-    parser_context_t* c, pd_system_set_code_V1_t* m)
-{
-    CHECK_ERROR(_readBytes(c, &m->code))
-    return parser_ok;
-}
 
 #endif
 
@@ -143,9 +80,6 @@ parser_error_t _readMethod_V1(
     case 0x0500: /* module 5 call 0 */
         CHECK_ERROR(_readMethod_balances_transfer_V1(c, &method->nested.balances_transfer_V1))
         break;
-    case 0x0502: /* module 5 call 2 */
-        CHECK_ERROR(_readMethod_balances_force_transfer_V1(c, &method->nested.balances_force_transfer_V1))
-        break;
     case 0x0503: /* module 5 call 3 */
         CHECK_ERROR(_readMethod_balances_transfer_keep_alive_V1(c, &method->nested.balances_transfer_keep_alive_V1))
         break;
@@ -159,35 +93,11 @@ parser_error_t _readMethod_V1(
     case 0x0803: /* module 8 call 3 */
         CHECK_ERROR(_readMethod_subtensor_module_remove_stake_V1(c, &method->nested.subtensor_module_remove_stake_V1))
         break;
-    case 0x0807: /* module 8 call 7 */
-        CHECK_ERROR(_readMethod_subtensor_module_burned_register_V1(c, &method->nested.subtensor_module_burned_register_V1))
-        break;
-    
+
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
 #endif
 
-    case 0x0002: // Module 0, Call 2
-        CHECK_ERROR(_readMethod_system_set_code_V1(c, &method->nested.system_set_code_V1))
-        break;
-
-    case 0x0700: // Module 7, Call 0
-        CHECK_ERROR(_readMethod_sudo_sudo_V1(c, &method->basic.sudo_sudo_V1))
-        break;
-    case 0x0702:  // Module 7, Call 2
-        CHECK_ERROR(_readMethod_sudo_set_key_V1(c, &method->nested.sudo_set_key_V1))
-        break;
-
-    case 0x0809: /* module 8 call 9 */
-        CHECK_ERROR(_readMethod_subtensor_module_sudo_add_network_V1(c, &method->nested.subtensor_module_sudo_add_network_V1))
-        break;
-
-    case 0x0501: /* module 5 call 2 */
-        CHECK_ERROR(_readMethod_balances_set_balance_V1(c, &method->nested.balances_set_balance_V1))
-        break;
-    case 0x0505: /* module 5 call 5 */
-        CHECK_ERROR(_readMethod_balances_force_unreserve_V1(c, &method->basic.balances_force_unreserve_V1))
-        break;
 #endif
     default:
         return parser_unexpected_callIndex;
@@ -211,11 +121,7 @@ const char* _getMethod_ModuleName_V1(uint8_t moduleIdx)
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
 #endif
-    case PD_CALL_SYSTEM_V1:
-        return STR_MO_SYSTEM;
-    case 0x07:
-        return STR_MO_SUDO;
-        
+
 #endif
     default:
         return NULL;
@@ -231,8 +137,6 @@ const char* _getMethod_Name_V1(uint8_t moduleIdx, uint8_t callIdx)
     switch (callPrivIdx) {
     case 0x0500: /* module 5 call 0 */
         return STR_ME_TRANSFER;
-    case 0x0502: /* module 5 call 2 */
-        return STR_ME_FORCE_TRANSFER;
     case 0x0503: /* module 5 call 3 */
         return STR_ME_TRANSFER_KEEP_ALIVE;
     case 0x0504: /* module 5 call 4 */
@@ -242,8 +146,6 @@ const char* _getMethod_Name_V1(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_ADD_STAKE;
     case 0x0803: /* module 8 call 3 */
         return STR_ME_REMOVE_STAKE;
-    case 0x0807: /* module 8 call 7 */
-        return STR_ME_BURNED_REGISTER;
     
     default:
         return _getMethod_Name_V1_ParserFull(callPrivIdx);
@@ -258,21 +160,6 @@ const char* _getMethod_Name_V1_ParserFull(uint16_t callPrivIdx)
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
 #endif
-    case 0x0002: // Module 0, Call 2
-        return STR_ME_SET_CODE;
-
-    case 0x0700: // Module 7, Call 0
-        return STR_ME_SUDO;
-    case 0x0702:  // Module 7, Call 2
-        return STR_ME_SET_KEY;
-    
-    case 0x0501: /* module 5 call 2 */
-        return STR_ME_SET_BALANCE;
-    case 0x0505: /* module 5 call 5 */
-        return STR_ME_FORCE_UNRESERVE;
-    
-    case 0x0809: /* module 8 call 9 */
-        return STR_ME_SUDO_ADD_NETWORK;
 
 #endif
     default:
@@ -289,8 +176,6 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
     switch (callPrivIdx) {
     case 0x0500: /* module 5 call 0 */
         return 2;
-    case 0x0502: /* module 5 call 2 */
-        return 3;
     case 0x0503: /* module 5 call 3 */
         return 2;
     case 0x0504: /* module 5 call 4 */
@@ -300,25 +185,11 @@ uint8_t _getMethod_NumItems_V1(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 0x0803: /* module 8 call 3 */
         return 2;
-    case 0x0807: /* module 8 call 3 */
-        return 2;
 
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
 #endif
-    case 0x0002: // Module 0, Call 2
-        return 1;
-    
-    case 0x0702: // Module 7, Call 2
-        return 1;
-    
-    case 0x0501: /* module 5 call 2 */
-        return 3;
-    case 0x0505: /* module 5 call 5 */
-        return 2;
-    
-    case 0x0809: /* module 8 call 9 */
-        return 3;
+
 #endif
     default:
         return 0;
@@ -337,17 +208,6 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         case 0:
             return STR_IT_dest;
         case 1:
-            return STR_IT_amount;
-        default:
-            return NULL;
-        }
-    case 0x0502: /* module 5 call 2 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_source;
-        case 1:
-            return STR_IT_dest;
-        case 2:
             return STR_IT_amount;
         default:
             return NULL;
@@ -389,66 +249,10 @@ const char* _getMethod_ItemName_V1(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 0x0807: /* module 8 call 7 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_netuid;
-        case 1:
-            return STR_IT_hotkey;
-        default:
-            return NULL;
-        }
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
 #endif
-    case 0x0002: // Module 0, Call 2
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_code;
-        default:
-            return NULL;
-        }
 
-    case 0x0702: // Module 7, Call 2
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_new;
-        default:
-            return NULL;
-        }
-
-    case 0x0501: /* module 5 call 2 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_who;
-        case 1:
-            return STR_IT_new_free;
-        case 2:
-            return STR_IT_new_reserved;
-        default:
-            return NULL;
-        }
-    case 0x0505: /* module 5 call 5 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_who;
-        case 1:
-            return STR_IT_amount;
-        default:
-            return NULL;
-        }
-
-    case 0x0809: /* module 8 call 9 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_netuid;
-        case 1:
-            return STR_IT_tempo;
-        case 2:
-            return STR_IT_modality;
-        default:
-            return NULL;
-        }
 #endif
     default:
         return NULL;
@@ -476,26 +280,6 @@ parser_error_t _getMethod_ItemValue_V1(
         case 1: /* balances_transfer_V1 - amount */;
             return _toStringCompactBalance(
                 &m->nested.balances_transfer_V1.amount,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 0x0502: /* module 5 call 2 */
-        switch (itemIdx) {
-        case 0: /* balances_force_transfer_V1 - source */;
-            return _toStringLookupasStaticLookupSource_V1(
-                &m->nested.balances_force_transfer_V1.source,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* balances_force_transfer_V1 - dest */;
-            return _toStringLookupasStaticLookupSource_V1(
-                &m->nested.balances_force_transfer_V1.dest,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 2: /* balances_force_transfer_V1 - amount */;
-            return _toStringCompactBalance(
-                &m->nested.balances_force_transfer_V1.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -562,104 +346,12 @@ parser_error_t _getMethod_ItemValue_V1(
         default:
             return parser_no_data;
         }
-    
-    case 0x0807: /* module 8 call 7 */
-        switch (itemIdx) {
-        case 0: /* subtensor_module_burned_register_V1 - netuid */;
-            return _toStringu16(
-                &m->nested.subtensor_module_burned_register_V1.netuid,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* subtensor_module_burned_register_V1 - hotkey */;
-            return _toStringStakingAddress32_V1(
-                &m->nested.subtensor_module_burned_register_V1.hotkey,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
+
     
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
 #endif
-    case 0x0002: // Module 0, Call 0
-        switch (itemIdx) {
-        case 0: /* system_set_code_V1 - code */;
-            return _toStringCodeBytes_V1 (
-                &m->nested.system_set_code_V1.code,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
 
-    case 0x0702: // Module 7, Call 2
-        switch (itemIdx) {
-        case 0: /* sudo_set_key_V1 - new */;
-            return _toStringLookupasStaticLookupSource_V1(
-                &m->nested.sudo_set_key_V1.new_,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    
-    case 0x0501: /* module 5 call 2 */
-        switch (itemIdx) {
-        case 0: /* balances_set_balance_V1 - who */;
-            return _toStringLookupasStaticLookupSource_V1(
-                &m->nested.balances_set_balance_V1.who,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* balances_set_balance_V1 - new_free */;
-            return _toStringCompactBalance(
-                &m->nested.balances_set_balance_V1.new_free,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 2: /* balances_set_balance_V1 - new_reserved */;
-            return _toStringCompactBalance(
-                &m->nested.balances_set_balance_V1.new_reserved,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 0x0505: /* module 5 call 5 */
-        switch (itemIdx) {
-        case 0: /* balances_force_unreserve_V1 - who */;
-            return _toStringLookupasStaticLookupSource_V1(
-                &m->basic.balances_force_unreserve_V1.who,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* balances_force_unreserve_V1 - amount */;
-            return _toStringBalance(
-                &m->basic.balances_force_unreserve_V1.amount,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-
-    case 0x0809: /* module 8 call 9 */
-        switch (itemIdx) {
-        case 0: /* subtensor_module_sudo_add_network_V1 - netuid */;
-            return _toStringu16(
-                &m->nested.subtensor_module_sudo_add_network_V1.netuid,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* subtensor_module_sudo_add_network_V1 - tempo */;
-            return _toStringu16(
-                &m->nested.subtensor_module_sudo_add_network_V1.tempo,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 2: /* subtensor_module_sudo_add_network_V1 - modality */;
-            return _toStringu16(
-                &m->nested.subtensor_module_sudo_add_network_V1.modality,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
 #endif
     default:
         return parser_ok;
@@ -684,9 +376,7 @@ bool _getMethod_IsNestingSupported_V1(uint8_t moduleIdx, uint8_t callIdx)
     uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
 
     switch (callPrivIdx) {
-    case 0x0700: // Sudo:Sudo
     case 0x0504: // Balances:Transfer all
-    case 0x0505: // Balances:Force unreserve
         return false;
     default:
         return true;
