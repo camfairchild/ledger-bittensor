@@ -1,4 +1,4 @@
-# Bittensor 1.1.x
+# Bittensor Nakamoto 1.1.x
 
 ## System
 
