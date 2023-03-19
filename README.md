@@ -1,4 +1,4 @@
-# Ledger Bittensor App
+# Ledger Bittensor Nakamoto App
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -34,7 +34,7 @@ Please:
 | Fill block              |                    |                    |                    |                    | `Perbill`ratio<br/>               |
 | Remark                  |                    |                    |                    |                    | `Bytes`remark<br/>                |
 | Set heap pages          |                    |                    |                    |                    | `u64`pages<br/>                   |
-| Set code                | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Vecu8`code<br/>                  |
+| Set code                |                    |                    |                    |                    | `Vecu8`code<br/>                  |
 | Set code without checks |                    |                    |                    |                    | `Vecu8`code<br/>                  |
 | Set storage             |                    |                    |                    |                    | `VecKeyValue`items<br/>           |
 | Kill storage            |                    |                    |                    |                    | `VecKey`keys<br/>                 |
@@ -51,9 +51,9 @@ Please:
 
 | Name                  | Nano S             | Nano S XL          | Nano SP/X          | Nesting            | Arguments                                           |
 | --------------------- | ------------------ | ------------------ | ------------------ | ------------------ | --------------------------------------------------- |
-| Sudo                  | :heavy_check_mark: Partial | :heavy_check_mark: Partial | :heavy_check_mark: Partial |                    | `Call`call<br/>                                     |
+| Sudo                  |                    |                    |                    |                    | `Call`call<br/>                                     |
 | Sudo unchecked weight |                    |                    |                    |                    | `Call`call<br/>`Weight`weight<br/>                  |
-| Set key               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `LookupasStaticLookupSource`new\_<br/>              |
+| Set key               |                    |                    |                    |                    | `LookupasStaticLookupSource`new\_<br/>              |
 | Sudo as               |                    |                    |                    |                    | `LookupasStaticLookupSource`who<br/>`Call`call<br/> |
 
 ## Balances
@@ -61,11 +61,11 @@ Please:
 | Name                | Nano S             | Nano S XL          | Nano SP/X          | Nesting            | Arguments                                                                                               |
 | ------------------- | ------------------ | ------------------ | ------------------ | ------------------ | ------------------------------------------------------------------------------------------------------- |
 | Transfer            | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `LookupasStaticLookupSource`dest<br/>`CompactBalance`amount<br/>                                        |
-| Set balance         |                    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `LookupasStaticLookupSource`who<br/>`CompactBalance`new_free<br/>`CompactBalance`new_reserved<br/>      |
-| Force transfer      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `LookupasStaticLookupSource`source<br/>`LookupasStaticLookupSource`dest<br/>`CompactBalance`amount<br/> |
+| Set balance         |                    |                    |                    |                    | `LookupasStaticLookupSource`who<br/>`CompactBalance`new_free<br/>`CompactBalance`new_reserved<br/>      |
+| Force transfer      |                    |                    |                    |                    | `LookupasStaticLookupSource`source<br/>`LookupasStaticLookupSource`dest<br/>`CompactBalance`amount<br/> |
 | Transfer keep alive | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `LookupasStaticLookupSource`dest<br/>`CompactBalance`amount<br/>                                        |
 | Transfer all        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |                    | `LookupasStaticLookupSource`dest<br/>`bool`keep_alive<br/>                                              |
-| Force unreserve     |                    | :heavy_check_mark: | :heavy_check_mark: |                    | `LookupasStaticLookupSource`who<br/>`Balance`amount<br/>                                                |
+| Force unreserve     |                    |                    |                    |                    | `LookupasStaticLookupSource`who<br/>`Balance`amount<br/>                                                |
                                                   |
 
 
@@ -80,5 +80,5 @@ Please:
 | Serve Axon           |        |        |        |        | `u32`version<br/>`u128`ip<br/>`u16`port<br/>`u8`ipType<br/>`u8`protocol<br/>`u8`placeholder1<br/>`u8`placeholder1<br/> |
 | Serve Prometheus     |        |        |        |        |`u32`version<br/>`u128`ip<br/>`u16`port<br/>`u8`ipType<br/> |
 | Set Weights          |        |        |        |        | `u16`netuid<br/>`Vecu16`dests<br/>`Vecu16`weights<br/>`u64`versionKey<br/> |
-| Sudo Add Network     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `u16`netuid<br/>`u16`tempo<br/>`u16`modality<br/> |
-| Burned Register          | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |:heavy_check_mark: | `u16`netuid<br/>`LookupasStaticLookupSource`hotkey<br/> |
+| Sudo Add Network     |        |        |        |        | `u16`netuid<br/>`u16`tempo<br/>`u16`modality<br/> |
+| Burned Register      |        |        |        |        | `u16`netuid<br/>`LookupasStaticLookupSource`hotkey<br/> |
