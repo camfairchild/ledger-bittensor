@@ -60,7 +60,7 @@ typedef enum {
 
 // nakamoto: adcb639cec07168f455d8bd3a43badf1114a414836829f5000e8279f70d4c667
 #define COIN_GENESIS_HASH "adcb639cec07168f455d8bd3a43badf1114a414836829f5000e8279f70d4c667"
-#define COIN_NAME "Bittensor"
+#define COIN_NAME "Nakamoto Bittensor Mainnet"
 #define COIN_TICKER "TAO "
 
 #define MENU_MAIN_APP_LINE1 "Bittensor"
