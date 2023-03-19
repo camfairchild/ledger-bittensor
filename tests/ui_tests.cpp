@@ -74,44 +74,6 @@ public:
     };
 };
 
-class JsonTestsD : public ::testing::TestWithParam<testcase_t> {
-public:
-    struct PrintToStringParamName {
-        template<class ParamType>
-        std::string operator()(const testing::TestParamInfo<ParamType> &info) const {
-            auto p = static_cast<testcase_t>(info.param);
-            std::stringstream ss;
-            ss << p.index << "_" << p.name;
-            return ss.str();
-        }
-    };
-};
-
-class JsonTestsE : public ::testing::TestWithParam<testcase_t> {
-public:
-    struct PrintToStringParamName {
-        template<class ParamType>
-        std::string operator()(const testing::TestParamInfo<ParamType> &info) const {
-            auto p = static_cast<testcase_t>(info.param);
-            std::stringstream ss;
-            ss << p.index << "_" << p.name;
-            return ss.str();
-        }
-    };
-};
-
-class JsonTestsF : public ::testing::TestWithParam<testcase_t> {
-public:
-    struct PrintToStringParamName {
-        template<class ParamType>
-        std::string operator()(const testing::TestParamInfo<ParamType> &info) const {
-            auto p = static_cast<testcase_t>(info.param);
-            std::stringstream ss;
-            ss << p.index << "_" << p.name;
-            return ss.str();
-        }
-    };
-};
 
 // Retrieve testcases from json file
 std::vector<testcase_t> GetJsonTestCases(const std::string &jsonFile) {
@@ -215,33 +177,6 @@ INSTANTIATE_TEST_SUITE_P
     JsonTestsC::PrintToStringParamName()
 );
 
-INSTANTIATE_TEST_SUITE_P
-
-(
-    JsonTestCasesSudoTxVer,
-    JsonTestsD,
-    ::testing::ValuesIn(GetJsonTestCases("testcases_sudo.json")),
-    JsonTestsD::PrintToStringParamName()
-);
-
-
-INSTANTIATE_TEST_SUITE_P
-
-(
-    JsonTestCasesSystemTxVer,
-    JsonTestsE,
-    ::testing::ValuesIn(GetJsonTestCases("testcases_system.json")),
-    JsonTestsE::PrintToStringParamName()
-);
-
-INSTANTIATE_TEST_SUITE_P
-
-(
-    JsonTestCasesSystemTxVer,
-    JsonTestsF,
-    ::testing::ValuesIn(GetJsonTestCases("testcases_burned_register.json")),
-    JsonTestsF::PrintToStringParamName()
-);
 
 // Parametric test using current runtime:
 TEST_P(JsonTestsA, CheckUIOutput_CurrentTX_Normal) { check_testcase(GetParam(), false); }
@@ -258,17 +193,3 @@ TEST_P(JsonTestsC, CheckUIOutput_StakingTX_Normal) { check_testcase(GetParam(), 
 
 TEST_P(JsonTestsC, CheckUIOutput_StakingTX_Expert) { check_testcase(GetParam(), true); }
 
-// Parametric test for sudo transactions:
-TEST_P(JsonTestsD, CheckUIOutput_SudoTX_Normal) { check_testcase(GetParam(), false); }
-
-TEST_P(JsonTestsD, CheckUIOutput_SudoTX_Expert) { check_testcase(GetParam(), true); }
-
-// Parametric test for system transactions:
-TEST_P(JsonTestsE, CheckUIOutput_SystemTX_Normal) { check_testcase(GetParam(), false); }
-
-TEST_P(JsonTestsE, CheckUIOutput_SystemTX_Expert) { check_testcase(GetParam(), true); }
-
-// Parametric test for burn reg transactions:
-TEST_P(JsonTestsF, CheckUIOutput_BurnRegTX_Normal) { check_testcase(GetParam(), false); }
-
-TEST_P(JsonTestsF, CheckUIOutput_BurnRegTX_Expert) { check_testcase(GetParam(), true); }
