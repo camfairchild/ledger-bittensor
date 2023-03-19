@@ -20,13 +20,13 @@
 extern "C" {
 #endif
 
-#define COIN_ADDR_TYPE 13116
+#define COIN_ADDR_TYPE 42
 #define CLA 0xb4
 
 #define HDPATH_LEN_DEFAULT 5
 #define HDPATH_0_DEFAULT (0x80000000 | 0x2c)
-#define HDPATH_1_DEFAULT (0x80000000 | 0x3ed)
-#define HDPATH_1_RECOVERY (0x80000000 | 0x3ed)
+#define HDPATH_1_DEFAULT (0x80000000 | 0x162)
+#define HDPATH_1_RECOVERY (0x80000000 | 0x1b2)
 
 #define HDPATH_2_DEFAULT (0x80000000u | 0u)
 #define HDPATH_3_DEFAULT (0u)
@@ -58,9 +58,8 @@ typedef enum {
 
 #define COIN_AMOUNT_DECIMAL_PLACES 9
 
-// TODO: Change to genesis hash for release
-// ledger-test: 6b58f8585fc50f28615fd8795c02f7a543f62b7ff80b0729003e713d6dee777e
-#define COIN_GENESIS_HASH "3c4ce585d71512a723b20e8f122f8e70c9c8830134b8cdfa01b43bb133a401d0"
+// nakamoto: adcb639cec07168f455d8bd3a43badf1114a414836829f5000e8279f70d4c667
+#define COIN_GENESIS_HASH "adcb639cec07168f455d8bd3a43badf1114a414836829f5000e8279f70d4c667"
 #define COIN_NAME "Bittensor"
 #define COIN_TICKER "TAO "
 
