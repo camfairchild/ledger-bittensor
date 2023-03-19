@@ -29,16 +29,15 @@ void __assert_fail(const char * assertion, const char * file, unsigned int line,
 }
 #endif
 
-#define FIELD_FIXED_TOTAL_COUNT 8
+#define FIELD_FIXED_TOTAL_COUNT 7
 
-#define FIELD_SUDO          0
-#define FIELD_METHOD        1
-#define FIELD_NETWORK       2
-#define FIELD_NONCE         3
-#define FIELD_TIP           4
-#define FIELD_ERA_PHASE     5
-#define FIELD_ERA_PERIOD    6
-#define FIELD_BLOCK_HASH    7
+#define FIELD_METHOD        0
+#define FIELD_NETWORK       1
+#define FIELD_NONCE         2
+#define FIELD_TIP           3
+#define FIELD_ERA_PHASE     4
+#define FIELD_ERA_PERIOD    5
+#define FIELD_BLOCK_HASH    6
 
 #define EXPERT_FIELDS_TOTAL_COUNT 5
 
@@ -71,10 +70,6 @@ bool parser_show_tip(const parser_context_t *ctx){
     return true;
 }
 
-bool parser_show_sudo(const parser_context_t *ctx){
-    return ctx->tx_obj->isSudo; // Don't show sudo if it's false
-}
-
 parser_error_t parser_validate(const parser_context_t *ctx) {
     // Iterate through all items to check that all can be shown and are valid
     uint8_t numItems = 0;
@@ -100,9 +95,7 @@ parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_item
     if (!parser_show_tip(ctx)) {
         total -= 1;
     }
-    if (!parser_show_sudo(ctx)) {
-        total -= 1;
-    }
+
     if (!parser_show_expert_fields()) {
         total -= EXPERT_FIELDS_TOTAL_COUNT;
 
@@ -137,18 +130,6 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
 
     if (displayIdx < 0 || displayIdx >= numItems) {
         return parser_no_data;
-    }
-
-    parser_error_t err = parser_ok;
-    if (displayIdx == FIELD_SUDO && parser_show_sudo(ctx)) {
-        snprintf(outKey, outKeyLen, "Sudo Origin");
-        snprintf(outVal, outValLen, "%s", ctx->tx_obj->isSudo ? "True" : "False");
-
-        return err;
-    }
-
-    if (!parser_show_sudo(ctx)) {
-        displayIdx++;
     }
 
     if (displayIdx == FIELD_METHOD) {
