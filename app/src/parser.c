@@ -131,6 +131,8 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
     if (displayIdx < 0 || displayIdx >= numItems) {
         return parser_no_data;
     }
+    
+    parser_error_t err = parser_ok;
 
     if (displayIdx == FIELD_METHOD) {
         snprintf(outKey, outKeyLen, "%s", _getMethod_ModuleName(ctx->tx_obj->transactionVersion, ctx->tx_obj->callIndex.moduleIdx));
